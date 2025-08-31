@@ -17,7 +17,7 @@ kafka:
   brokers:
     - "localhost:9092"
   group_id: "review-job"
-  topic: "topic3"
+  topic: "example"
 elasticsearch:
   addresses:
     - "http://localhost:9200"

@@ -24,12 +24,27 @@ var (
 	Version string
 	// flagconf is the config flag.
 	flagconf string
-
-	id, _ = os.Hostname()
+	logPath  string
+	id, _    = os.Hostname()
 )
 
 func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&logPath, "log", "../../logs", "log path")
+}
+
+func createLog() *os.File {
+	// 先创建日志目录
+	if err := os.MkdirAll(logPath, 0755); err != nil {
+		panic(err)
+	}
+
+	// O_TRUNC 清空日志文件内容
+	logFile, err := os.OpenFile(logPath+"/review_service.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		panic(err)
+	}
+	return logFile
 }
 
 func newApp(logger log.Logger, js *server.JobServer) *kratos.App {
@@ -49,7 +64,7 @@ func newApp(logger log.Logger, js *server.JobServer) *kratos.App {
 
 func main() {
 	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
+	logger := log.With(log.NewStdLogger(createLog()),
 		"ts", log.DefaultTimestamp,
 		"caller", log.DefaultCaller,
 		"service.id", id,
@@ -58,6 +73,7 @@ func main() {
 		"trace.id", tracing.TraceID(),
 		"span.id", tracing.SpanID(),
 	)
+
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -74,7 +90,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Es, bc.Kafka, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Elasticsearch, bc.Kafka, logger)
 	if err != nil {
 		panic(err)
 	}

@@ -21,7 +21,10 @@ type Data struct {
 // NewData .
 func NewData(c *conf.Data, logger log.Logger, es *ESClient, kafka *kafka.Reader) (*Data, func(), error) {
 	cleanup := func() {
-		log.NewHelper(logger).Info("closing the data resources")
+		log.NewHelper(logger).Info("closing the data resources...")
+		// todo 关闭kakfaReader
+		log.NewHelper(logger).Info("closing the kafka.Reader")
+		kafka.Close()
 	}
 	return &Data{
 		kafkaReader: kafka,
@@ -39,7 +42,7 @@ func NewKafkaReader(cfg *conf.Kafka) *kafka.Reader {
 
 type ESClient struct {
 	*elasticsearch.TypedClient
-	index string // 索引库
+	Idx string // 索引库
 }
 
 func NewESClient(cfg *conf.Elasticsearch) (*ESClient, error) {
@@ -55,6 +58,6 @@ func NewESClient(cfg *conf.Elasticsearch) (*ESClient, error) {
 	}
 	return &ESClient{
 		TypedClient: client,
-		index:       cfg.Index,
+		Idx:         cfg.Index,
 	}, nil
 }

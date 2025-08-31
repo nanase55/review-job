@@ -34,7 +34,7 @@ func wireApp(confServer *conf.Server, confData *conf.Data, elasticsearch *conf.E
 	}
 	reviewRepo := data.NewReviewRepo(dataData, logger)
 	reviewUsecase := biz.NewReviewUsecase(reviewRepo, logger)
-	jobServer := server.NewJobServer(reviewUsecase)
+	jobServer := server.NewJobServer(reviewUsecase, logger)
 	app := newApp(logger, jobServer)
 	return app, func() {
 		cleanup()
