@@ -255,11 +255,11 @@ func (x *Kafka) GetTopic() string {
 }
 
 type Elasticsearch struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Addresses     []string               `protobuf:"bytes,1,rep,name=addresses,proto3" json:"addresses,omitempty"`
-	Index         string                 `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Addresses        []string               `protobuf:"bytes,1,rep,name=addresses,proto3" json:"addresses,omitempty"`
+	ReviewInfosIndex string                 `protobuf:"bytes,2,opt,name=reviewInfos_index,json=reviewInfosIndex,proto3" json:"reviewInfos_index,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Elasticsearch) Reset() {
@@ -299,9 +299,9 @@ func (x *Elasticsearch) GetAddresses() []string {
 	return nil
 }
 
-func (x *Elasticsearch) GetIndex() string {
+func (x *Elasticsearch) GetReviewInfosIndex() string {
 	if x != nil {
-		return x.Index
+		return x.ReviewInfosIndex
 	}
 	return ""
 }
@@ -582,10 +582,10 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\x05Kafka\x12\x18\n" +
 	"\abrokers\x18\x01 \x03(\tR\abrokers\x12\x19\n" +
 	"\bgroup_id\x18\x02 \x01(\tR\agroupId\x12\x14\n" +
-	"\x05topic\x18\x03 \x01(\tR\x05topic\"C\n" +
+	"\x05topic\x18\x03 \x01(\tR\x05topic\"Z\n" +
 	"\rElasticsearch\x12\x1c\n" +
-	"\taddresses\x18\x01 \x03(\tR\taddresses\x12\x14\n" +
-	"\x05index\x18\x02 \x01(\tR\x05indexB\x1fZ\x1dreview-job/internal/conf;confb\x06proto3"
+	"\taddresses\x18\x01 \x03(\tR\taddresses\x12+\n" +
+	"\x11reviewInfos_index\x18\x02 \x01(\tR\x10reviewInfosIndexB\x1fZ\x1dreview-job/internal/conf;confb\x06proto3"
 
 var (
 	file_conf_conf_proto_rawDescOnce sync.Once

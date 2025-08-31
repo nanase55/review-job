@@ -42,7 +42,8 @@ func NewKafkaReader(cfg *conf.Kafka) *kafka.Reader {
 
 type ESClient struct {
 	*elasticsearch.TypedClient
-	Idx string // 索引库
+	// 索引库
+	ReviewInfosIdx string
 }
 
 func NewESClient(cfg *conf.Elasticsearch) (*ESClient, error) {
@@ -57,7 +58,7 @@ func NewESClient(cfg *conf.Elasticsearch) (*ESClient, error) {
 		return nil, err
 	}
 	return &ESClient{
-		TypedClient: client,
-		Idx:         cfg.Index,
+		TypedClient:    client,
+		ReviewInfosIdx: cfg.ReviewInfosIndex,
 	}, nil
 }

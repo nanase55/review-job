@@ -21,9 +21,9 @@ type Msg struct {
 
 type ReviewRepo interface {
 	// 写入doc到es
-	CreateDoc(context.Context, map[string]any) error
+	CreateReviewInfo(context.Context, map[string]any) error
 	// 更新es里的doc
-	UpdateDoc(context.Context, map[string]any) error
+	UpdateReviewInfo(context.Context, map[string]any) error
 
 	// 从mq读取消息
 	FetchMessage(context.Context) (*kafka.Message, error)
@@ -80,14 +80,14 @@ func (uc *ReviewUsecase) ConsumeAndSaveFromMQ(ctx context.Context) error {
 	switch msg.Type {
 	case "INSERT":
 		for idx := range msg.Data {
-			if err := uc.repo.CreateDoc(ctx, msg.Data[idx]); err != nil {
+			if err := uc.repo.CreateReviewInfo(ctx, msg.Data[idx]); err != nil {
 				// 如果部分写入成功,因为id相同,有幂等性保证
 				return fmt.Errorf("写入es失败: %#v", msg)
 			}
 		}
 	case "UPDATE":
 		for idx := range msg.Data {
-			if err := uc.repo.UpdateDoc(ctx, msg.Data[idx]); err != nil {
+			if err := uc.repo.UpdateReviewInfo(ctx, msg.Data[idx]); err != nil {
 				return fmt.Errorf("更新es失败: %#v", msg)
 			}
 		}

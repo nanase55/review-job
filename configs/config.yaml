@@ -21,4 +21,4 @@ kafka:
 elasticsearch:
   addresses:
     - "http://localhost:9200"
-  index: "review"
+  reviewInfos_index: "review_infos"
