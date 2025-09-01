@@ -255,11 +255,13 @@ func (x *Kafka) GetTopic() string {
 }
 
 type Elasticsearch struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Addresses        []string               `protobuf:"bytes,1,rep,name=addresses,proto3" json:"addresses,omitempty"`
-	ReviewInfosIndex string                 `protobuf:"bytes,2,opt,name=reviewInfos_index,json=reviewInfosIndex,proto3" json:"reviewInfos_index,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Addresses         []string               `protobuf:"bytes,1,rep,name=addresses,proto3" json:"addresses,omitempty"`
+	ReviewInfosIndex  string                 `protobuf:"bytes,2,opt,name=reviewInfos_index,json=reviewInfosIndex,proto3" json:"reviewInfos_index,omitempty"`
+	ReviewReplyIndex  string                 `protobuf:"bytes,3,opt,name=reviewReply_index,json=reviewReplyIndex,proto3" json:"reviewReply_index,omitempty"`
+	ReviewAppealIndex string                 `protobuf:"bytes,4,opt,name=reviewAppeal_index,json=reviewAppealIndex,proto3" json:"reviewAppeal_index,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Elasticsearch) Reset() {
@@ -302,6 +304,20 @@ func (x *Elasticsearch) GetAddresses() []string {
 func (x *Elasticsearch) GetReviewInfosIndex() string {
 	if x != nil {
 		return x.ReviewInfosIndex
+	}
+	return ""
+}
+
+func (x *Elasticsearch) GetReviewReplyIndex() string {
+	if x != nil {
+		return x.ReviewReplyIndex
+	}
+	return ""
+}
+
+func (x *Elasticsearch) GetReviewAppealIndex() string {
+	if x != nil {
+		return x.ReviewAppealIndex
 	}
 	return ""
 }
@@ -582,10 +598,12 @@ const file_conf_conf_proto_rawDesc = "" +
 	"\x05Kafka\x12\x18\n" +
 	"\abrokers\x18\x01 \x03(\tR\abrokers\x12\x19\n" +
 	"\bgroup_id\x18\x02 \x01(\tR\agroupId\x12\x14\n" +
-	"\x05topic\x18\x03 \x01(\tR\x05topic\"Z\n" +
+	"\x05topic\x18\x03 \x01(\tR\x05topic\"\xb6\x01\n" +
 	"\rElasticsearch\x12\x1c\n" +
 	"\taddresses\x18\x01 \x03(\tR\taddresses\x12+\n" +
-	"\x11reviewInfos_index\x18\x02 \x01(\tR\x10reviewInfosIndexB\x1fZ\x1dreview-job/internal/conf;confb\x06proto3"
+	"\x11reviewInfos_index\x18\x02 \x01(\tR\x10reviewInfosIndex\x12+\n" +
+	"\x11reviewReply_index\x18\x03 \x01(\tR\x10reviewReplyIndex\x12-\n" +
+	"\x12reviewAppeal_index\x18\x04 \x01(\tR\x11reviewAppealIndexB\x1fZ\x1dreview-job/internal/conf;confb\x06proto3"
 
 var (
 	file_conf_conf_proto_rawDescOnce sync.Once

@@ -51,4 +51,6 @@ message Kafka {
 message Elasticsearch {
   repeated string addresses = 1;
   string reviewInfos_index = 2;
+  string reviewReply_index = 3;
+  string reviewAppeal_index = 4;
 }

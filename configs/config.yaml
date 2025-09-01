@@ -22,3 +22,5 @@ elasticsearch:
   addresses:
     - "http://localhost:9200"
   reviewInfos_index: "review_infos"
+  reviewReply_index: "review_reply"
+  reviewAppeal_index: "review_appeal"

@@ -21,9 +21,9 @@ type Msg struct {
 
 type ReviewRepo interface {
 	// 写入doc到es
-	CreateReviewInfo(context.Context, map[string]any) error
+	CreateReviewInfo(context.Context, string, map[string]any) error
 	// 更新es里的doc
-	UpdateReviewInfo(context.Context, map[string]any) error
+	UpdateReviewInfo(context.Context, string, map[string]any) error
 
 	// 从mq读取消息
 	FetchMessage(context.Context) (*kafka.Message, error)
@@ -66,6 +66,10 @@ func (uc *ReviewUsecase) ConsumeAndSaveFromMQ(ctx context.Context) error {
 		return err
 	}
 
+	// kafka客户端是单线程读取消息,并行可能造成offset混乱
+	// 之后可以使用线程池并行处理
+	// todo: 使用协程池并行写入es
+
 	// 2. 反序列化消息
 	msg := &Msg{}
 	if err := json.Unmarshal(m.Value, msg); err != nil {
@@ -80,19 +84,20 @@ func (uc *ReviewUsecase) ConsumeAndSaveFromMQ(ctx context.Context) error {
 	switch msg.Type {
 	case "INSERT":
 		for idx := range msg.Data {
-			if err := uc.repo.CreateReviewInfo(ctx, msg.Data[idx]); err != nil {
+			if err := uc.repo.CreateReviewInfo(ctx, msg.Table, msg.Data[idx]); err != nil {
 				// 如果部分写入成功,因为id相同,有幂等性保证
 				return fmt.Errorf("写入es失败: %#v", msg)
 			}
 		}
 	case "UPDATE":
 		for idx := range msg.Data {
-			if err := uc.repo.UpdateReviewInfo(ctx, msg.Data[idx]); err != nil {
+			if err := uc.repo.UpdateReviewInfo(ctx, msg.Table, msg.Data[idx]); err != nil {
 				return fmt.Errorf("更新es失败: %#v", msg)
 			}
 		}
 	default:
-		return fmt.Errorf("unknown msg.Type")
+		// 暂不处理delete消息
+		uc.log.Warnf("未处理的消息类型: %s", msg.Type)
 	}
 
 	// 提交消息

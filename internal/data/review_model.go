@@ -11,7 +11,7 @@ type OpInfo struct {
 	OpUser  string `json:"op_user,omitempty"`
 }
 
-type ReviewInfo struct {
+type ReviewInfoDoc struct {
 	ReviewID      string    `json:"review_id"`
 	OrderID       string    `json:"order_id"`
 	SkuID         string    `json:"sku_id"`
@@ -40,8 +40,8 @@ type ReviewInfo struct {
 }
 
 // MapToReviewDoc 转换为ReviewInfo
-func MapToReviewDoc(m map[string]any) *ReviewInfo {
-	doc := &ReviewInfo{}
+func MapToReviewDoc(m map[string]any) *ReviewInfoDoc {
+	doc := &ReviewInfoDoc{}
 	if v, ok := m["review_id"].(string); ok {
 		doc.ReviewID = v
 	}
@@ -129,6 +129,164 @@ func MapToReviewDoc(m map[string]any) *ReviewInfo {
 	if v, ok := m["delete_at"].(string); ok {
 		t, _ := time.Parse("2006-01-02 15:04:05", v)
 		doc.UpdateAt = t
+	}
+	return doc
+}
+
+type ReviewReplyDoc struct {
+	ReplyID  string `json:"reply_id"`
+	ReviewID string `json:"review_id"`
+	StoreID  string `json:"store_id"`
+
+	Content   string `json:"content,omitempty"`
+	PicInfo   string `json:"pic_info,omitempty"`
+	VideoInfo string `json:"video_info,omitempty"`
+
+	CreateBy string `json:"create_by,omitempty"`
+	UpdateBy string `json:"update_by,omitempty"`
+
+	CreateAt time.Time `json:"create_at,omitempty"`
+	UpdateAt time.Time `json:"update_at,omitempty"`
+	DeleteAt time.Time `json:"delete_at,omitempty"`
+
+	Version int `json:"version,omitempty"`
+
+	ExtJSON  string `json:"ext_json,omitempty"`
+	CtrlJSON string `json:"ctrl_json,omitempty"`
+}
+
+func MapToReviewReplyDoc(m map[string]any) *ReviewReplyDoc {
+	doc := &ReviewReplyDoc{}
+
+	if v, ok := m["reply_id"].(string); ok {
+		doc.ReplyID = v
+	}
+	if v, ok := m["review_id"].(string); ok {
+		doc.ReviewID = v
+	}
+	if v, ok := m["store_id"].(string); ok {
+		doc.StoreID = v
+	}
+	if v, ok := m["content"].(string); ok {
+		doc.Content = v
+	}
+	if v, ok := m["pic_info"].(string); ok {
+		doc.PicInfo = v
+	}
+	if v, ok := m["video_info"].(string); ok {
+		doc.VideoInfo = v
+	}
+	if v, ok := m["create_by"].(string); ok {
+		doc.CreateBy = v
+	}
+	if v, ok := m["update_by"].(string); ok {
+		doc.UpdateBy = v
+	}
+	if v, ok := m["create_at"].(string); ok {
+		t, _ := time.Parse("2006-01-02 15:04:05", v)
+		doc.CreateAt = t
+	}
+	if v, ok := m["update_at"].(string); ok {
+		t, _ := time.Parse("2006-01-02 15:04:05", v)
+		doc.UpdateAt = t
+	}
+	if v, ok := m["delete_at"].(string); ok {
+		t, _ := time.Parse("2006-01-02 15:04:05", v)
+		doc.UpdateAt = t
+	}
+	if v, ok := m["version"].(string); ok {
+		doc.Version, _ = strconv.Atoi(v)
+	}
+	if v, ok := m["ext_json"].(string); ok {
+		doc.ExtJSON = v
+	}
+	if v, ok := m["ctrl_json"].(string); ok {
+		doc.CtrlJSON = v
+	}
+	return doc
+}
+
+type ReviewAppealDoc struct {
+	AppealID  string `json:"appeal_id"`
+	ReviewID  string `json:"review_id"`
+	StoreID   string `json:"store_id"`
+	Status    int    `json:"status"`
+	Content   string `json:"content,omitempty"`
+	PicInfo   string `json:"pic_info,omitempty"`
+	VideoInfo string `json:"video_info,omitempty"`
+	OpInfo    OpInfo `json:"op_info,omitempty"`
+
+	CreateBy string `json:"create_by,omitempty"`
+	UpdateBy string `json:"update_by,omitempty"`
+
+	CreateAt time.Time `json:"create_at,omitempty"`
+	UpdateAt time.Time `json:"update_at,omitempty"`
+	DeleteAt time.Time `json:"delete_at,omitempty"`
+
+	Version int `json:"version,omitempty"`
+
+	ExtJSON  string `json:"ext_json,omitempty"`
+	CtrlJSON string `json:"ctrl_json,omitempty"`
+}
+
+func MapToReviewAppealDoc(m map[string]any) *ReviewAppealDoc {
+	doc := &ReviewAppealDoc{}
+	if v, ok := m["appeal_id"].(string); ok {
+		doc.AppealID = v
+	}
+	if v, ok := m["review_id"].(string); ok {
+		doc.ReviewID = v
+	}
+	if v, ok := m["store_id"].(string); ok {
+		doc.StoreID = v
+	}
+	if v, ok := m["status"].(string); ok {
+		doc.Status, _ = strconv.Atoi(v)
+	}
+	if v, ok := m["content"].(string); ok {
+		doc.Content = v
+	}
+	if v, ok := m["pic_info"].(string); ok {
+		doc.PicInfo = v
+	}
+	if v, ok := m["video_info"].(string); ok {
+		doc.VideoInfo = v
+	}
+	if v, ok := m["reason"].(string); ok {
+		doc.OpInfo.Reason = v
+	}
+	if v, ok := m["remarks"].(string); ok {
+		doc.OpInfo.Remarks = v
+	}
+	if v, ok := m["op_user"].(string); ok {
+		doc.OpInfo.OpUser = v
+	}
+	if v, ok := m["video_info"].(string); ok {
+		doc.VideoInfo = v
+	}
+	if v, ok := m["create_by"].(string); ok {
+		doc.CreateBy = v
+	}
+	if v, ok := m["create_at"].(string); ok {
+		t, _ := time.Parse("2006-01-02 15:04:05", v)
+		doc.CreateAt = t
+	}
+	if v, ok := m["update_at"].(string); ok {
+		t, _ := time.Parse("2006-01-02 15:04:05", v)
+		doc.UpdateAt = t
+	}
+	if v, ok := m["delete_at"].(string); ok {
+		t, _ := time.Parse("2006-01-02 15:04:05", v)
+		doc.UpdateAt = t
+	}
+	if v, ok := m["version"].(string); ok {
+		doc.Version, _ = strconv.Atoi(v)
+	}
+	if v, ok := m["ext_json"].(string); ok {
+		doc.ExtJSON = v
+	}
+	if v, ok := m["ctrl_json"].(string); ok {
+		doc.CtrlJSON = v
 	}
 	return doc
 }
