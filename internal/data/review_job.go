@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"review-job/internal/biz"
+	"strconv"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/segmentio/kafka-go"
@@ -39,7 +40,8 @@ func (r *reviewRepo) CommitMessage(ctx context.Context, m *kafka.Message) error 
 
 // CreateDoc 创建reviewInfos文档
 func (r *reviewRepo) CreateReviewInfo(ctx context.Context, table string, doc map[string]any) error {
-	var idx, id string
+	var idx string
+	var id int64
 	var d any
 
 	switch table {
@@ -60,7 +62,7 @@ func (r *reviewRepo) CreateReviewInfo(ctx context.Context, table string, doc map
 	}
 
 	// 添加文档: id相同保证幂等性
-	resp, err := r.data.esClient.Index(idx).Id(id).Document(d).Do(ctx)
+	resp, err := r.data.esClient.Index(idx).Id(strconv.Itoa(int(id))).Document(d).Do(ctx)
 	if err != nil {
 		r.log.Errorf("indexing document failed, err:%v\n", err)
 		return err
@@ -72,7 +74,8 @@ func (r *reviewRepo) CreateReviewInfo(ctx context.Context, table string, doc map
 
 // UpdateDoc 在es中更新文档
 func (r *reviewRepo) UpdateReviewInfo(ctx context.Context, table string, doc map[string]any) error {
-	var idx, id string
+	var idx string
+	var id int64
 	var d any
 
 	switch table {
@@ -92,7 +95,7 @@ func (r *reviewRepo) UpdateReviewInfo(ctx context.Context, table string, doc map
 		return fmt.Errorf("unknown table: %s", table)
 	}
 
-	resp, err := r.data.esClient.Update(idx, id).Doc(d).Do(ctx)
+	resp, err := r.data.esClient.Update(idx, strconv.Itoa(int(id))).Doc(d).Do(ctx)
 	if err != nil {
 		r.log.Errorf("update document failed, err:%v\n", err)
 		return err

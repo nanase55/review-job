@@ -12,24 +12,24 @@ type OpInfo struct {
 }
 
 type ReviewInfoDoc struct {
-	ReviewID      string    `json:"review_id"`
-	OrderID       string    `json:"order_id"`
+	ReviewID      int64     `json:"review_id"`
+	OrderID       int64     `json:"order_id"`
 	SkuID         string    `json:"sku_id"`
-	SpuID         string    `json:"spu_id"`
+	SpuID         int64     `json:"spu_id"`
 	StoreID       string    `json:"store_id"`
 	UserID        string    `json:"user_id"`
 	Content       string    `json:"content"`
 	Tags          string    `json:"tags,omitempty"`
-	Score         int       `json:"score"`
-	ServiceScore  int       `json:"service_score"`
-	ExpressScore  int       `json:"express_score"`
-	HasMedia      bool      `json:"has_media"`
+	Score         int32     `json:"score"`
+	ServiceScore  int32     `json:"service_score"`
+	ExpressScore  int32     `json:"express_score"`
+	HasMedia      int32     `json:"has_media"`
 	PicInfo       string    `json:"pic_info,omitempty"`
 	VideoInfo     string    `json:"video_info,omitempty"`
-	Anonymous     bool      `json:"anonymous"`
-	Status        int       `json:"status"`
-	IsDefault     bool      `json:"is_default"`
-	HasReply      bool      `json:"has_reply"`
+	Anonymous     int32     `json:"anonymous"`
+	Status        int32     `json:"status"`
+	IsDefault     int32     `json:"is_default"`
+	HasReply      int32     `json:"has_reply"`
 	OpInfo        OpInfo    `json:"op_info,omitempty"`
 	GoodsSnapshot string    `json:"goods_snapshot,omitempty"`
 	ExtJSON       string    `json:"ext_json,omitempty"`
@@ -43,16 +43,19 @@ type ReviewInfoDoc struct {
 func MapToReviewDoc(m map[string]any) *ReviewInfoDoc {
 	doc := &ReviewInfoDoc{}
 	if v, ok := m["review_id"].(string); ok {
-		doc.ReviewID = v
+		a, _ := strconv.Atoi(v)
+		doc.ReviewID = int64(a)
 	}
 	if v, ok := m["order_id"].(string); ok {
-		doc.OrderID = v
+		a, _ := strconv.Atoi(v)
+		doc.OrderID = int64(a)
 	}
 	if v, ok := m["sku_id"].(string); ok {
 		doc.SkuID = v
 	}
 	if v, ok := m["spu_id"].(string); ok {
-		doc.SpuID = v
+		a, _ := strconv.Atoi(v)
+		doc.SpuID = int64(a)
 	}
 	if v, ok := m["store_id"].(string); ok {
 		doc.StoreID = v
@@ -67,17 +70,20 @@ func MapToReviewDoc(m map[string]any) *ReviewInfoDoc {
 		doc.Tags = v
 	}
 	if v, ok := m["score"].(string); ok {
-		doc.Score, _ = strconv.Atoi(v)
+		a, _ := strconv.Atoi(v)
+		doc.Score = int32(a)
 	}
 	if v, ok := m["service_score"].(string); ok {
-		doc.ServiceScore, _ = strconv.Atoi(v)
+		a, _ := strconv.Atoi(v)
+		doc.ServiceScore = int32(a)
 	}
 	if v, ok := m["express_score"].(string); ok {
-		doc.ExpressScore, _ = strconv.Atoi(v)
+		a, _ := strconv.Atoi(v)
+		doc.ExpressScore = int32(a)
 	}
 	if v, ok := m["has_media"].(string); ok {
 		a, _ := strconv.Atoi(v)
-		doc.HasMedia = (a == 1)
+		doc.HasMedia = int32(a)
 	}
 	if v, ok := m["pic_info"].(string); ok {
 		doc.PicInfo = v
@@ -87,18 +93,19 @@ func MapToReviewDoc(m map[string]any) *ReviewInfoDoc {
 	}
 	if v, ok := m["anonymous"].(string); ok {
 		a, _ := strconv.Atoi(v)
-		doc.Anonymous = (a == 1)
+		doc.Anonymous = int32(a)
 	}
 	if v, ok := m["status"].(string); ok {
-		doc.Status, _ = strconv.Atoi(v)
+		a, _ := strconv.Atoi(v)
+		doc.Status = int32(a)
 	}
 	if v, ok := m["is_default"].(string); ok {
 		a, _ := strconv.Atoi(v)
-		doc.IsDefault = (a == 1)
+		doc.IsDefault = int32(a)
 	}
 	if v, ok := m["has_reply"].(string); ok {
 		a, _ := strconv.Atoi(v)
-		doc.HasReply = (a == 1)
+		doc.HasReply = int32(a)
 	}
 	if v, ok := m["reason"].(string); ok {
 		doc.OpInfo.Reason = v
@@ -134,8 +141,8 @@ func MapToReviewDoc(m map[string]any) *ReviewInfoDoc {
 }
 
 type ReviewReplyDoc struct {
-	ReplyID  string `json:"reply_id"`
-	ReviewID string `json:"review_id"`
+	ReplyID  int64  `json:"reply_id"`
+	ReviewID int64  `json:"review_id"`
 	StoreID  string `json:"store_id"`
 
 	Content   string `json:"content,omitempty"`
@@ -159,10 +166,12 @@ func MapToReviewReplyDoc(m map[string]any) *ReviewReplyDoc {
 	doc := &ReviewReplyDoc{}
 
 	if v, ok := m["reply_id"].(string); ok {
-		doc.ReplyID = v
+		a, _ := strconv.Atoi(v)
+		doc.ReplyID = int64(a)
 	}
 	if v, ok := m["review_id"].(string); ok {
-		doc.ReviewID = v
+		a, _ := strconv.Atoi(v)
+		doc.ReviewID = int64(a)
 	}
 	if v, ok := m["store_id"].(string); ok {
 		doc.StoreID = v
@@ -207,10 +216,10 @@ func MapToReviewReplyDoc(m map[string]any) *ReviewReplyDoc {
 }
 
 type ReviewAppealDoc struct {
-	AppealID  string `json:"appeal_id"`
-	ReviewID  string `json:"review_id"`
+	AppealID  int64  `json:"appeal_id"`
+	ReviewID  int64  `json:"review_id"`
 	StoreID   string `json:"store_id"`
-	Status    int    `json:"status"`
+	Status    int32  `json:"status"`
 	Content   string `json:"content,omitempty"`
 	PicInfo   string `json:"pic_info,omitempty"`
 	VideoInfo string `json:"video_info,omitempty"`
@@ -232,16 +241,19 @@ type ReviewAppealDoc struct {
 func MapToReviewAppealDoc(m map[string]any) *ReviewAppealDoc {
 	doc := &ReviewAppealDoc{}
 	if v, ok := m["appeal_id"].(string); ok {
-		doc.AppealID = v
+		a, _ := strconv.Atoi(v)
+		doc.AppealID = int64(a)
 	}
 	if v, ok := m["review_id"].(string); ok {
-		doc.ReviewID = v
+		a, _ := strconv.Atoi(v)
+		doc.ReviewID = int64(a)
 	}
 	if v, ok := m["store_id"].(string); ok {
 		doc.StoreID = v
 	}
 	if v, ok := m["status"].(string); ok {
-		doc.Status, _ = strconv.Atoi(v)
+		a, _ := strconv.Atoi(v)
+		doc.Status = int32(a)
 	}
 	if v, ok := m["content"].(string); ok {
 		doc.Content = v
